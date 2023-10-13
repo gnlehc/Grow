@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grow/pages/home.dart';
 import 'package:grow/pages/register.dart';
-import '../Auth/firebase.dart';
+
+import '../database/firebase.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

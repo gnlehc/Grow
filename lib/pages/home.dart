@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,13 +36,13 @@ class _HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Card(
+              Card(
                 elevation: 3,
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         'Balance',
                         style: TextStyle(
@@ -124,3 +126,8 @@ class TransactionItem extends StatelessWidget {
     );
   }
 }
+
+// Stream<List<User>> getUser() => FirebaseFirestore.instance
+//     .collection('users')
+//     .snapshots()
+//     .map((event) => event.docs.map((e) => User.fromjson(e.data())).toList());
