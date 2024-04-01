@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1082083130028",
+    "project_id": "grow-e-wallet-e5710",
+    "storage_bucket": "grow-e-wallet-e5710.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082083130028:android:957c669334c4620299bd09",
+        "android_client_info": {
+          "package_name": "com.example.grow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi7Eg8qPwhtHGNkmMW4E7rp-DNIzGzfgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
