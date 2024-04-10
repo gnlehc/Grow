@@ -45,6 +45,12 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               decoration: const InputDecoration(labelText: 'Category'),
             ),
             const SizedBox(height: 12),
+            TextFormField(
+              controller: _amountController,
+              decoration: const InputDecoration(labelText: 'Expense Amount'),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 12),
             GestureDetector(
               onTap: _showDatePicker,
               child: AbsorbPointer(
@@ -58,12 +64,6 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                       TextEditingController(text: _selectedDate.toString()),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              controller: _amountController,
-              decoration: const InputDecoration(labelText: 'Expense Amount'),
-              keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -97,28 +97,23 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
 
   Future<void> _addTransaction(String category, double amount) async {
     try {
-      // Get current user ID
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
-      // Construct transaction data
       Map<String, dynamic> transactionData = {
         'category': category,
         'date': _selectedDate,
         'amount': amount,
       };
 
-      // Add transaction data to Firestore
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .collection('transactions')
           .add(transactionData);
 
-      // Navigate back to previous screen
       Navigator.pop(context);
     } catch (e) {
-      print('Error adding transaction: $e');
-      // Handle error
+      throw ('Error adding transaction: $e');
     }
   }
 }

@@ -58,7 +58,7 @@ class FirebaseService {
     try {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
-      print('Error signing out: $e');
+      throw Exception('Error signing out: $e');
     }
   }
 
@@ -88,14 +88,12 @@ class FirebaseService {
       final userData = userSnapshot.data();
       if (userData != null && userData.containsKey('balance')) {
         final double balance = userData['balance'] ?? 0.0;
-        return balance.toInt(); // Convert double balance to int
+        return balance.toInt();
       } else {
-        return 0; // Return 0 if balance is not found or null
+        return 0;
       }
     } catch (e) {
-      // Proper error handling
-      print('Error getting balance: $e');
-      return 0; // Return default value in case of error
+      return 0;
     }
   }
 
@@ -106,27 +104,56 @@ class FirebaseService {
           await _userCollection.doc(userId).get()
               as DocumentSnapshot<Map<String, dynamic>>;
 
-      // Check if the user document exists
       if (userSnapshot.exists) {
-        // Get the current balance
         dynamic currentBalance = userSnapshot.data()?['balance'] ?? 0;
 
-        // Convert current balance to int if it's not already
         if (currentBalance is! int) {
           currentBalance = (currentBalance ?? 0).toInt();
         }
 
-        // Calculate new balance after top-up
         int newBalance = currentBalance + amount;
 
-        // Update the user document with the new balance
         await _userCollection.doc(userId).update({'balance': newBalance});
       } else {
         throw Exception('User not found.');
       }
     } catch (e) {
-      print('Error topping up balance: $e');
       throw Exception('Error topping up balance: $e');
+    }
+  }
+
+  Future<void> updateTransaction({
+    required String userId,
+    required String transactionId,
+    required String category,
+    required int amount,
+  }) async {
+    try {
+      await _userCollection
+          .doc(userId)
+          .collection('transactions')
+          .doc(transactionId)
+          .update({
+        'category': category,
+        'amount': amount,
+      });
+    } catch (e) {
+      throw Exception('Error updating transaction: $e');
+    }
+  }
+
+  Future<void> deleteTransaction({
+    required String userId,
+    required String transactionId,
+  }) async {
+    try {
+      await _userCollection
+          .doc(userId)
+          .collection('transactions')
+          .doc(transactionId)
+          .delete();
+    } catch (e) {
+      throw Exception('Error deleting transaction: $e');
     }
   }
 }

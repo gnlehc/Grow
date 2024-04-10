@@ -4,10 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:grow/database/firebase.dart';
 import 'package:grow/pages/add_transaction_page.dart';
 import 'package:grow/pages/login_page.dart';
-import 'package:grow/pages/top_up_page.dart';
+import 'package:grow/pages/add_income_page.dart';
+import 'package:grow/widgets/transaction_widget.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -18,12 +19,14 @@ class _HomeState extends State<Home> {
   late Stream<QuerySnapshot<Map<String, dynamic>>> _transactionStream;
   late String _userEmail = '';
   late final String _username = _userEmail.split('@').first.trim();
+  late String _userId = '';
 
   @override
   void initState() {
     super.initState();
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
+      _userId = currentUser.uid;
       _balanceStream = _createBalanceStream(currentUser.uid);
       _transactionStream = _createTransactionStream(currentUser.uid);
       _userEmail = currentUser.email ?? '';
@@ -51,10 +54,14 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 30, 30, 30),
-        title: const Text(
-          'Ledger',
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Hi $_username!',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         actions: [
           IconButton(
@@ -78,15 +85,8 @@ class _HomeState extends State<Home> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Hi $_username!',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
               Card(
+                color: Colors.white,
                 elevation: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -129,8 +129,7 @@ class _HomeState extends State<Home> {
               ),
               const SizedBox(height: 16),
               Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly, // Adjust as needed
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -138,19 +137,18 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          vertical: 1, horizontal: 65),
-                      backgroundColor:
-                          Colors.blueGrey[900], // Adjust color as needed
+                          vertical: 1, horizontal: 50),
+                      backgroundColor: Colors.blue, // Adjust color as needed
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const TopUpPage()),
+                            builder: (context) => const AddIncome()),
                       );
                     },
                     child: const Text(
-                      'Top Up',
+                      'Add Income',
                       style: TextStyle(fontSize: 14, color: Colors.white),
                     ),
                   ),
@@ -160,8 +158,8 @@ class _HomeState extends State<Home> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 40),
-                      backgroundColor: Colors.blueGrey[900],
+                          vertical: 10, horizontal: 50),
+                      backgroundColor: Colors.red,
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -171,7 +169,7 @@ class _HomeState extends State<Home> {
                       );
                     },
                     child: const Text(
-                      'Add Transaction',
+                      'Add Expense',
                       style: TextStyle(fontSize: 14, color: Colors.white),
                     ),
                   ),
@@ -199,10 +197,14 @@ class _HomeState extends State<Home> {
                         final date =
                             (transaction['date'] as Timestamp?)?.toDate();
                         final amount = transaction['amount'];
+                        final transactionId = data.docs[index].id;
+
                         return TransactionItem(
                           title: category,
                           date: date?.toString() ?? '',
-                          amount: amount.toString(),
+                          amount: amount.toInt(),
+                          userId: _userId,
+                          transactionId: transactionId,
                         );
                       },
                     );
@@ -211,38 +213,6 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class TransactionItem extends StatelessWidget {
-  final String title;
-  final String date;
-  final String amount;
-
-  const TransactionItem({
-    required this.title,
-    required this.date,
-    required this.amount,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: const CircleAvatar(
-        backgroundColor: Colors.amber,
-        child: Icon(Icons.shopping_cart, color: Colors.white),
-      ),
-      title: Text(title),
-      subtitle: Text(date),
-      trailing: Text(
-        'Rp. $amount',
-        style: const TextStyle(
-          color: Colors.red,
-          // color: amount.startsWith('-') ? Colors.red : Colors.green,
-          fontWeight: FontWeight.bold,
         ),
       ),
     );
