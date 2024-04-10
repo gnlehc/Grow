@@ -2,7 +2,11 @@ name: grow
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
+<<<<<<< HEAD
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+=======
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+>>>>>>> 7da72e2e7d8089ada8da870ddccc37da5722e6ef
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +23,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
+<<<<<<< HEAD
   sdk: '>=3.3.3 <4.0.0'
+=======
+  sdk: ">=3.3.0 <4.0.0"
+>>>>>>> 7da72e2e7d8089ada8da870ddccc37da5722e6ef
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,6 +39,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+<<<<<<< HEAD
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -38,6 +47,14 @@ dependencies:
   firebase_core: ^2.29.0
   firebase_auth: ^4.19.1
   cloud_firestore: ^4.16.1
+=======
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.6
+  cloud_firestore: ^4.15.10
+  firebase_auth: ^4.18.0
+  firebase_core: ^2.27.2
+>>>>>>> 7da72e2e7d8089ada8da870ddccc37da5722e6ef
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +72,11 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+<<<<<<< HEAD
+=======
+  assets:
+    - assets/grow.png
+>>>>>>> 7da72e2e7d8089ada8da870ddccc37da5722e6ef
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

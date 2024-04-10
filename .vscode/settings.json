@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
   "java.configuration.updateBuildConfiguration": "automatic",
   "cmake.sourceDirectory": "C:/Users/Chelsea Ng/LnTProject/grow/build/windows/x64/extracted/firebase_cpp_sdk_windows"
+=======
+  "java.configuration.updateBuildConfiguration": "automatic"
+>>>>>>> 7da72e2e7d8089ada8da870ddccc37da5722e6ef
 }

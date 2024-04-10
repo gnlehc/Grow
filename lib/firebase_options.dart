@@ -83,5 +83,4 @@ class DefaultFirebaseOptions {
     authDomain: 'grow-e-wallet-e5710.firebaseapp.com',
     storageBucket: 'grow-e-wallet-e5710.appspot.com',
   );
-
 }
