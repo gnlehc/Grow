@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grow/pages/home.dart';
-import 'package:grow/pages/login.dart';
+import 'package:grow/pages/home_page.dart';
+import 'package:grow/pages/login_page.dart';
 
 import '../database/firebase.dart';
 

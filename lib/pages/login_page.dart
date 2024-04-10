@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grow/pages/home.dart';
-import 'package:grow/pages/register.dart';
+import 'package:grow/pages/home_page.dart';
+import 'package:grow/pages/register_page.dart';
 
 import '../database/firebase.dart';
 
@@ -95,12 +95,16 @@ class _LoginState extends State<Login> {
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  isLogin
-                      ? _auth.signIn(email, password)
-                      : 'There is no account that match these credentials';
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const Home();
-                  }));
+                  try {
+                    await _auth.signIn(email, password);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => const Home()));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          'Sign-in failed. Please check your credentials and try again.'),
+                    ));
+                  }
                 }
               },
               child: const Text(
