@@ -191,7 +191,7 @@ class _RegisterState extends State<Register> {
                           builder: (context) => const Home()));
 
                       scaffoldMessanger.showSnackBar(SnackBar(
-                        backgroundColor: Colors.green[100],
+                        backgroundColor: Colors.green[600],
                         content: Text(
                           result != null
                               ? "Register Success"

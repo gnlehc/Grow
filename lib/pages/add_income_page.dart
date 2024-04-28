@@ -34,7 +34,7 @@ class AddIncome extends StatelessWidget {
 
                 Navigator.pop(context);
               },
-              child: const Text('Confirm Top Up'),
+              child: const Text('Add Income'),
             ),
           ],
         ),

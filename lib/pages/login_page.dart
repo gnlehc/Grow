@@ -95,15 +95,18 @@ class _LoginState extends State<Login> {
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
                   formKey.currentState!.save();
-                  try {
-                    await _auth.signIn(email, password);
+                  var result = await _auth.signIn(email, password);
+                  final scaffoldMessenger = ScaffoldMessenger.of(context);
+                  scaffoldMessenger.showSnackBar(SnackBar(
+                    backgroundColor:
+                        result != null ? Colors.green[600] : Colors.red,
+                    content: Text(result != null
+                        ? "Login Success"
+                        : 'Sign-in failed. Please check your credentials and try again.'),
+                  ));
+                  if (result != null) {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => const Home()));
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                          'Sign-in failed. Please check your credentials and try again.'),
-                    ));
                   }
                 }
               },

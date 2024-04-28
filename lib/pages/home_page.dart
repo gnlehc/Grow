@@ -6,6 +6,7 @@ import 'package:grow/pages/expense_page.dart';
 import 'package:grow/pages/login_page.dart';
 import 'package:grow/pages/add_income_page.dart';
 import 'package:grow/widgets/expense_widget.dart';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,17 +28,18 @@ class _HomeState extends State<Home> {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       _userId = currentUser.uid;
+      _userEmail = currentUser.email ?? '';
       _balanceStream = _createBalanceStream(currentUser.uid);
       _transactionStream = _createTransactionStream(currentUser.uid);
-      _userEmail = currentUser.email ?? '';
     }
   }
 
-  Stream<int> _createBalanceStream(String userId) async* {
-    while (true) {
-      await Future.delayed(const Duration(seconds: 2));
-      yield await FirebaseService().getBalance(userId);
-    }
+  Stream<int> _createBalanceStream(String userId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .snapshots()
+        .map((snapshot) => snapshot.data()?['balance'] ?? 0);
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> _createTransactionStream(
@@ -111,9 +113,13 @@ class _HomeState extends State<Home> {
                             return Text('Error: ${snapshot.error}');
                           } else {
                             final balance = snapshot.data ?? 0;
+                            final formattedBalance = NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp.',
+                                    decimalDigits: 0)
+                                .format(balance);
                             return Text(
-                              // '\$$balance',
-                              'Rp. $balance',
+                              formattedBalance,
                               style: TextStyle(
                                 fontSize: 24,
                                 color: balance >= 0 ? Colors.green : Colors.red,
